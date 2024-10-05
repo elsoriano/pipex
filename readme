@@ -1,0 +1,5 @@
+if no output file -> Creates output file
+if output file exist -> It deletes its content and ovewrites
+if input file does not exist -> error message zsh: no such file or directory: name of the file trying to find
+if no | or bitwise between commands, it still does the same (I dont know the reason)
+if any of the ocmmands is wrong -> zsh: command not found: name of command not found
