@@ -1,6 +1,0 @@
-[submodule "printf"]
-	path = printf
-	url = git@github.com:elsoriano/printf.git
-[submodule "inc/libft"]
-	path = inc/libft
-	url = git@github.com:elsoriano/printf.git
