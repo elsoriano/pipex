@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:28:49 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/05 19:35:13 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/08 11:22:31 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
-void	ft_check_infile(char *infile)
+int	main(int argc, char **argv, char **envp)
 {
-	
-}
+	int	i;
 
-int	main(int argc, char **argv)
-{
-	if (argc != 5)
-	{
-		perror("You have entered an invalid number of arguments");
+	if (!argv[0] || !argv)
 		return (1);
+	if (argc == 0)
+		return (2);
+	i = 0;
+	while (envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
 	}
-	ft_check_infile(argv[1]);
 }
