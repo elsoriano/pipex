@@ -13,7 +13,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C ./inc/libft
-	$(GCC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(GCC) $(CFLAGS) $(OBJS) -o $(NAME) ./inc/libft/libft.a
 
 $(OBJS): $(SRCS)
 
