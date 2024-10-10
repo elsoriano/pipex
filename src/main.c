@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:28:49 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/09 19:29:03 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/10 20:27:48 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,56 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 int	main(int argc, char **argv, char **envp)
 {
-	int	i;
-	int	pipe[2];
-	int	pid;
-	int	n;
-	int	buff;
-	int	fd;
+	int		pipend[2];
+	int		pid;
+	int		fd;
+	int		fdout;
+	int		pipend2[2];
+	char *arr[] = {"wc", "-l", NULL};
 
 	if (!argv[0] || !argv)
 		return (1);
 	if (argc == 0)
 		return (2);
-	i = 0;
-	while (envp[i])
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
-	fd = open(argv[1]);
-	if (pipe(pipe) == -1)
+	fd = open(argv[1], O_RDONLY);
+	fdout = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (fd == -1)
+		return (4);
+	if (pipe(pipend) == -1)
 		return (3);
+	if (pipe(pipend2) == -1)
+		return (4);
 	pid = fork();
 	if (pid == -1)
 		return (3);
 	if (pid > 0)
 	{
-		printf("this is the parent process. PID = %d\n", pid);
-		close(pipe[1]);
-		read(pipe[0], &buff, sizeof(int));
-		printf("result of buff = %d\n", buff);
+		//parent process
+		printf("this is the parent process %d\n", pid);
+		dup2(pipend[0], STDIN_FILENO);
+		close(pipend[0]);
+		close(pipend[1]);
+		dup2(fdout, STDOUT_FILENO);
+		close(fdout);
+		execve("/bin/wc", arr, envp);
 		wait(NULL);
 	}
 	else
 	{
-		n = 20;
+		//child proccess
 		printf("this is the child process. PID = %d\n", pid);
-		close(fd[0]);
-		write(fd[1], &n, sizeof(int));
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		dup2(pipend[1], STDOUT_FILENO);
+		close(pipend[1]);
+		close(pipend[0]);
+		execve("/bin/wc", arr, envp);
+		perror("execve failed");
 	}
+	close (fd);
+	close (fdout);
 }
