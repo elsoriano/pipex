@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:28:49 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/11 12:16:39 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/11 12:38:17 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 		dup2(fdout, STDOUT_FILENO);
 		close(fdout);
 		execve("/bin/wc", arr2, envp);
-		wait(NULL);
+		waitpid(pid, NULL, 0);
 	}
 	else
 	{
