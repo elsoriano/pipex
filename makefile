@@ -3,7 +3,7 @@ GCC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SRCSDIR = src
 OBJSDIR = obj
-SRCSFILES = main.c
+SRCSFILES = pipex.c
 OBJSFILES = $(SRCSFILES:.c=.o)
 SRCS = $(addprefix $(SRCSDIR)/, $(SRCSFILES))
 OBJS = $(addprefix $(OBJSDIR)/, $(OBJSFILES))
