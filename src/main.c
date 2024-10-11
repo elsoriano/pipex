@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:28:49 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/11 12:38:17 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/11 14:31:32 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	if (pid > 0)
 	{
 		//parent process
-		printf("this is the parent process %d\n", pid);
+		printf("this is the parent process");
 		dup2(pipend[0], STDIN_FILENO);
 		close(pipend[0]);
 		close(pipend[1]);
@@ -59,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 	else
 	{
 		//child proccess
-		printf("this is the child process. PID = %d\n", pid);
+		printf("this is the child process");
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 		dup2(pipend[1], STDOUT_FILENO);
