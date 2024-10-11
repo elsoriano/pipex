@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:28:49 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/10 20:27:48 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/11 12:16:39 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include "../inc/libft/inc/libft.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -23,8 +24,11 @@ int	main(int argc, char **argv, char **envp)
 	int		fd;
 	int		fdout;
 	int		pipend2[2];
-	char *arr[] = {"wc", "-l", NULL};
+	char 	**arr1;
+	char 	**arr2;
 
+	arr1 = ft_split(argv[2], ' ');
+	arr2 = ft_split(argv[3], ' ');
 	if (!argv[0] || !argv)
 		return (1);
 	if (argc == 0)
@@ -49,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 		close(pipend[1]);
 		dup2(fdout, STDOUT_FILENO);
 		close(fdout);
-		execve("/bin/wc", arr, envp);
+		execve("/bin/wc", arr2, envp);
 		wait(NULL);
 	}
 	else
@@ -61,7 +65,7 @@ int	main(int argc, char **argv, char **envp)
 		dup2(pipend[1], STDOUT_FILENO);
 		close(pipend[1]);
 		close(pipend[0]);
-		execve("/bin/wc", arr, envp);
+		execve("/bin/wc", arr1, envp);
 		perror("execve failed");
 	}
 	close (fd);
