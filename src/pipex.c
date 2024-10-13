@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 14:32:18 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/13 11:35:08 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/13 11:54:26 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,28 @@ int	ft_error_exit(t_index *i, char *msg)
 	exit (EXIT_FAILURE);
 }
 
+char	*ft_cmnd_check(t_index	*i, char **envp)
+{
+	int		i;
+	char	*path;
+	char	*cmnd;
+
+	i = 0;
+	path = NULL;
+	while (envp[i])
+	{
+		if (ft_strnstr(envp[i], "PATH=", ft_strlen(envp[i])))
+		{
+			path = ft_strnstr(envp[i], "PATH=", ft_strlen(envp[i])) + 5;
+			break;
+		}
+		i++;
+	}
+	if (!path)
+		ft_error_exit(i, "no path in environment");
+	ft_strjoin(path,)
+}
+
 void	ft_exec(t_index *i, char **argv, char **envp)
 {
 	i->pid = fork();
@@ -34,7 +56,7 @@ void	ft_exec(t_index *i, char **argv, char **envp)
 		dup2(i->fd[1], STDOUT_FILENO);
 		close(i->fd[1]);
 		close(i->pipe1[1]);
-		execve ("/bin/wc", ft_split(argv[3], ' '), envp);
+		execve (ft_cmnd_check(argv[3], envp), ft_split(argv[3], ' '), envp);
 		ft_error_exit(i, "Could not execute command 2");
 		waitpid(i->pid, NULL, 0);
 	}
@@ -44,7 +66,7 @@ void	ft_exec(t_index *i, char **argv, char **envp)
 		close(i->fd[0]);
 		dup2(i->pipe1[1], STDOUT_FILENO);
 		close(i->pipe1[0]);
-		execve ("/bin/wc", ft_split(argv[2], ' '), envp);
+		execve (ft_cmnd_check(argv[3], envp), ft_split(argv[2], ' '), envp);
 		ft_error_exit(i, "Could not execute command 1");
 	}
 }
