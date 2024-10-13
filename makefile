@@ -21,7 +21,7 @@ $(OBJSDIR)/%.o: $(SRCSDIR)/%.c | obj
 	$(GCC) $(CFLAGS) -c $< -o $@ $(HEAD)
 
 debug:
-	gcc src/*.c -I inc -o debug
+	gcc src/*.c -I inc inc/libft/libft.a -g -o debug
 
 obj:
 	mkdir -p $(OBJSDIR)
@@ -34,5 +34,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean re
+.PHONY: clean fclean re debug
 
