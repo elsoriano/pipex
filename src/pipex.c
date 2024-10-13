@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 14:32:18 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/13 10:44:37 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/13 11:35:08 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,21 @@ void	ft_exec(t_index *i, char **argv, char **envp)
 		ft_error_exit(i, "Error creating subprocess");
 	if (i->pid > 0)
 	{
-		waitpid(i->pid, NULL, 0);
 		dup2(i->pipe1[0], STDIN_FILENO);
 		dup2(i->fd[1], STDOUT_FILENO);
+		close(i->fd[1]);
 		close(i->pipe1[1]);
-		execve ("bin/wc", ft_split(argv[3], ' '), envp);
+		execve ("/bin/wc", ft_split(argv[3], ' '), envp);
+		ft_error_exit(i, "Could not execute command 2");
+		waitpid(i->pid, NULL, 0);
 	}
 	else
 	{
 		dup2(i->fd[0], STDIN_FILENO);
+		close(i->fd[0]);
 		dup2(i->pipe1[1], STDOUT_FILENO);
 		close(i->pipe1[0]);
-		execve ("bin/wc", ft_split(argv[2], ' '), envp);
+		execve ("/bin/wc", ft_split(argv[2], ' '), envp);
 		ft_error_exit(i, "Could not execute command 1");
 	}
 }
