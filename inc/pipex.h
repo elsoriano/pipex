@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:29:24 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/14 11:22:58 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:20:16 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ typedef struct s_index
 {
 	int		fd[2];
 	int		pipe1[2];
-	int		pipe2[2];
 	int		pid;
 	char	*path1;
 	char	**cmd1;
