@@ -3,7 +3,8 @@ GCC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SRCSDIR = src
 OBJSDIR = obj
-SRCSFILES = pipex.c
+SRCSFILES = pipex.c \
+				utils.c
 OBJSFILES = $(SRCSFILES:.c=.o)
 SRCS = $(addprefix $(SRCSDIR)/, $(SRCSFILES))
 OBJS = $(addprefix $(OBJSDIR)/, $(OBJSFILES))
@@ -21,7 +22,7 @@ $(OBJSDIR)/%.o: $(SRCSDIR)/%.c | obj
 	$(GCC) $(CFLAGS) -c $< -o $@ $(HEAD)
 
 debug:
-	gcc src/*.c -I inc inc/libft/libft.a -g -o debug
+	gcc src/*.c -I inc inc/libft/libft.a -fsanitize=address -static-libasan -g -o debug
 
 obj:
 	mkdir -p $(OBJSDIR)
