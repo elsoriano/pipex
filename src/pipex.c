@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 14:32:18 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/15 12:36:23 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:30:30 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ char	*ft_paths(t_index *i, char *cmd, char **envp)
 
 void	ft_exec(t_index *i, char **envp)
 {
+	pipe(i->pipe1);
+	if (!i->pipe1)
+		ft_clear_exit(i, "Error creating pipe");
 	i->pid = fork();
 	if (i->pid == -1)
 		ft_clear_exit(i, "Error creating subprocess");
@@ -74,8 +77,8 @@ void	ft_exec(t_index *i, char **envp)
 		dup2(i->fd[1], STDOUT_FILENO);
 		close(i->fd[1]);
 		close(i->pipe1[1]);
-		execve (i->path2, i->cmd2, envp);
-		ft_clear_exit(i, "Could not execute command 2");
+		if (execve (i->path2, i->cmd2, envp) == -1)
+			ft_clear_exit(i, "Could not execute command 2");
 		waitpid(i->pid, NULL, 0);
 	}
 	else
@@ -84,8 +87,8 @@ void	ft_exec(t_index *i, char **envp)
 		close(i->fd[0]);
 		dup2(i->pipe1[1], STDOUT_FILENO);
 		close(i->pipe1[0]);
-		execve (i->path1, i->cmd1, envp);
-		ft_clear_exit(i, "Could not execute command 1");
+		if (execve (i->path1, i->cmd1, envp) == -1)
+			ft_clear_exit(i, "Could not execute command 1");
 	}
 }
 
@@ -114,15 +117,20 @@ int	main(int argc, char **argv, char **envp)
 	i.path1 = NULL;
 	i.path2 = NULL;
 	if (argc != 5)
-		return (ft_clear_exit(NULL, "Invalid number of arguments"));
+		ft_clear_exit(NULL, "Invalid number of arguments");
 	ft_open_files(&i, argv[1], argv[argc - 1]);
 	i.cmd1 = ft_split(argv[2], ' ');
 	i.cmd2 = ft_split(argv[3], ' ');
 	i.path1 = ft_paths(&i, i.cmd1[0], envp);
 	i.path2 = ft_paths(&i, i.cmd2[0], envp);
-	pipe(i.pipe1);
-	if (!i.pipe1)
-		return (ft_clear_exit(&i, "Error creating pipe"));
-	ft_exec(&i, envp);
-	ft_clear_exit(&i, NULL);
+	i.pid = fork();
+	if (i.pid == -1)
+		ft_clear_exit(&i, "Error creating subproccess");
+	if (i.pid == 0)
+		ft_exec(&i, envp);
+	else
+	{
+		ft_clear_exit(&i, NULL);
+		waitpid(i.pid, NULL, 0);
+	}
 }

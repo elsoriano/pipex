@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:37:53 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/15 12:33:25 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:47:00 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	ft_clear_exit(t_index *i, char *msg)
 		close (i->fd[0]);
 	if (i && i->fd[1])
 		close (i->fd[1]);
-	if (i->cmd1)
+	if (i && i->cmd1)
 		ft_clean_cmd(i->cmd1);
-	if (i->cmd2)
+	if (i && i->cmd2)
 		ft_clean_cmd(i->cmd2);
 	if (i && i->path1)
 		free(i->path1);
