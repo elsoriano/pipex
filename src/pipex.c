@@ -6,7 +6,7 @@
 /*   By: rhernand <rhernand@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 14:32:18 by rhernand          #+#    #+#             */
-/*   Updated: 2024/10/15 13:30:30 by rhernand         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:19:19 by rhernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	*ft_paths(t_index *i, char *cmd, char **envp)
 	int		k;
 	char	*path;
 
+	if (!cmd)
+		ft_clear_exit(i, "Empty Command");
 	k = 0;
 	path = NULL;
 	while (envp[k])
